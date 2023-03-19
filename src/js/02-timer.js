@@ -5,11 +5,12 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 const dataPicker = document.querySelector('#datetime-picker');
 const startBtn = document.querySelector('[data-start]');
-const dataDays = document.querySelector('[data-days]');
-const dataHours = document.querySelector('[data-hours]');
-const dataMinutes = document.querySelector('[data-minutes]');
-const dataSeconds = document.querySelector('[data-seconds]');
+let dataDays = document.querySelector('[data-days]');
+let dataHours = document.querySelector('[data-hours]');
+let dataMinutes = document.querySelector('[data-minutes]');
+let dataSeconds = document.querySelector('[data-seconds]');
 
+dataPicker.style.fontSize = '18px';
 const timer = document.querySelector('.timer');
 timer.style.display = 'flex';
 timer.style.marginTop = '10px';
@@ -34,7 +35,7 @@ fields.forEach(field => {
 const options = {
   enableTime: true,
   time_24hr: true,
-  dateFormat: 'd-m-y H:i',
+  dateFormat: 'Y-m-d H:i',
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
@@ -51,3 +52,42 @@ const options = {
 };
 
 flatpickr(dataPicker, options);
+
+dataPicker.addEventListener('change', () => {
+  let input = dataPicker.value;
+  let pickedDate = new Date(input).getTime();
+  let defaultDate = new Date().getTime();
+  startBtn.addEventListener('click', () => {
+    startBtn.disabled = true;
+    dataPicker.disabled = true;
+    let milliseconds = pickedDate - defaultDate;
+    let interval = setInterval(() => {
+      milliseconds = milliseconds - 1000;
+      convertMs(milliseconds);
+      if (milliseconds < 1000) {
+        clearInterval(interval);
+        startBtn.disabled = false;
+        dataPicker.disabled = false;
+      }
+    }, 1000);
+  });
+});
+
+function convertMs(ms) {
+  // Number of milliseconds per unit of time
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  // Remaining days
+  dataDays.innerHTML = Math.floor(ms / day);
+  // Remaining hours
+  dataHours.innerHTML = Math.floor((ms % day) / hour);
+  // Remaining minutes
+  dataMinutes.innerHTML = Math.floor(((ms % day) % hour) / minute);
+  // Remaining seconds
+  dataSeconds.innerHTML = Math.floor((((ms % day) % hour) % minute) / second);
+
+  return { dataDays, dataHours, dataMinutes, dataSeconds };
+}
