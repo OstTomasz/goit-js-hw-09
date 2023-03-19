@@ -2,6 +2,7 @@
 import flatpickr from 'flatpickr';
 // Dodatkowy import stylów
 import 'flatpickr/dist/flatpickr.min.css';
+import Notiflix from 'notiflix';
 
 const dataPicker = document.querySelector('#datetime-picker');
 const startBtn = document.querySelector('[data-start]');
@@ -44,7 +45,12 @@ const options = {
     console.log(selectedDates[0]);
     if (selectedDate < defaultDate) {
       startBtn.disabled = true;
-      window.alert('Please choose a date in the future');
+      Notiflix.Report.failure(
+        'Error!',
+        'Please choose a date in the future!',
+        'Got it!'
+      );
+      //   window.alert('Please choose a date in the future');
     } else {
       startBtn.disabled = false;
     }
@@ -68,6 +74,18 @@ dataPicker.addEventListener('change', () => {
         clearInterval(interval);
         startBtn.disabled = false;
         dataPicker.disabled = false;
+      }
+      if (dataDays.innerHTML) {
+        dataDays.innerHTML = dataDays.innerHTML.padStart(2, '0');
+      }
+      if (dataHours.innerHTML) {
+        dataHours.innerHTML = dataHours.innerHTML.padStart(2, '0');
+      }
+      if (dataMinutes.innerHTML) {
+        dataMinutes.innerHTML = dataMinutes.innerHTML.padStart(2, '0');
+      }
+      if (dataSeconds.innerHTML) {
+        dataSeconds.innerHTML = dataSeconds.innerHTML.padStart(2, '0');
       }
     }, 1000);
   });
