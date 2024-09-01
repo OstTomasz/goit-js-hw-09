@@ -1,3 +1,8 @@
+// Opisany w dokumentacji
+import SimpleLightbox from 'simplelightbox';
+// Opcjonalny import stylów
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
 const images = [
   {
     preview:
@@ -63,6 +68,7 @@ const images = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
 //1. wybieramy galerię z DOM
 const gallery = document.querySelector('ul.gallery');
 
@@ -99,3 +105,14 @@ const renderElements = (images, rootList) => {
 
 //5. Renderujemy elementy do html
 renderElements(images, gallery);
+
+const galLink = document.querySelectorAll(`a.gallery-link`);
+
+new SimpleLightbox(galLink, {
+  captionsData: 'alt',
+  captionDelay: 250,
+  animationSpeed: 250,
+  fadeSpeed: 250,
+  scrollZoom: false,
+  showCounter: false,
+});
