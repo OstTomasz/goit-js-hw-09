@@ -1,0 +1,18 @@
+.gallery {
+  margin-top: 20px;
+  padding-left: 35px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 360px 360px 360px;
+  grid-template-rows: 200px 200px 200px;
+  gap: 24px;
+}
+.gallery-item,
+.gallery-image {
+  width: 360px;
+  height: 200px;
+}
+
+.gallery-item:hover {
+  scale: 1.02;
+}
